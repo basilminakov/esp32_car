@@ -22,10 +22,13 @@
 //#define CAMERA_MODEL_ESP32S3_CAM_LCD
 //#define CAMERA_MODEL_DFRobot_FireBeetle2_ESP32S3 // Has PSRAM
 //#define CAMERA_MODEL_DFRobot_Romeo_ESP32S3 // Has PSRAM
+
+#define USE_ACCESS_POINT // Switch WiFi to AP mode
+
 #include "camera_pins.h"
 
-const char *ssid = "";                 // Enter SSID WIFI Name
-const char *password = "";  // Enter WIFI Password
+const char *ssid = "ESP32-CAM Access Point";                 // Enter SSID WIFI AP Name
+const char *password = "letsrock";  // Enter WIFI Password
 
 // GPIO Setting
 int gpLed = 4;  // Light
@@ -131,6 +134,20 @@ void setup() {
   s->set_vflip(s, 1);
 #endif
 
+#if defined(USE_ACCESS_POINT)
+  WiFi.mode(WIFI_AP);
+  WiFiAddr = "192.168.4.1";
+  WiFi.softAP(ssid, password);
+  WiFi.setSleep(false);
+
+  Serial.print("WiFi access point ");
+  Serial.print(WiFi.SSID());
+  Serial.println(" created.");
+
+  startCameraServer();
+  Serial.printf("Access point is up at %s", WiFiAddr);
+#else
+  WiFi.mode(WIFI_ST);
   WiFi.begin(ssid, password);
   WiFi.setSleep(false);
 
@@ -149,6 +166,7 @@ void setup() {
   Serial.print(WiFi.localIP());
   WiFiAddr = WiFi.localIP().toString();
   Serial.println("' to connect");
+#endif
 }
 
 void loop() {

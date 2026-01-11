@@ -161,55 +161,45 @@ static esp_err_t index_handler(httpd_req_t *req) {
   httpd_resp_set_type(req, "text/html; charset=utf-8");
   String page = "";
   page += "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0\">\n";
-  page += "<script>var xhttp = new XMLHttpRequest();</script>";
-  page += "<script>function getsend(arg) { xhttp.open('GET', arg +'?' + new Date().getTime(), true); xhttp.send() } </script>";
-  page += "<p align=center><IMG SRC='http://" + WiFiAddr + ":81/stream' style='width:320px;transform:rotate(180deg);'></p>";
-
-  page += "<p align=center>";
-  page += "<button style=background-color:lightgrey;width:120px;height:40px onmousedown=getsend('leftup') onmouseup=getsend('stop') ontouchstart=getsend('leftup') ontouchend=getsend('stop')><b>Влево вперёд</b></button>&nbsp;";
-  page += "<button style=background-color:lightgrey;width:120px;height:40px onmousedown=getsend('go') onmouseup=getsend('stop') ontouchstart=getsend('go') ontouchend=getsend('stop') ><b>Вперёд</b></button>&nbsp;";
-  page += "<button style=background-color:lightgrey;width:120px;height:40px onmousedown=getsend('rightup') onmouseup=getsend('stop') ontouchstart=getsend('rightup') ontouchend=getsend('stop') ><b>Вправо вперёд</b></button>";
-  page += "</p>";
-
-  page += "<p align=center>";
-  page += "<button style=background-color:lightgrey;width:120px;height:40px; onmousedown=getsend('left') onmouseup=getsend('stop') ontouchstart=getsend('left') ontouchend=getsend('stop')><b>Влево</b></button>&nbsp;";
-  page += "<button style=background-color:indianred;width:120px;height:40px onmousedown=getsend('stop') onmouseup=getsend('stop')><b>Стоп</b></button>&nbsp;";
-  page += "<button style=background-color:lightgrey;width:120px;height:40px; onmousedown=getsend('right') onmouseup=getsend('stop') ontouchstart=getsend('right') ontouchend=getsend('stop')><b>Вправо</b></button>";
-  page += "</p>";
-
-  page += "<p align=center>";
-  page += "<button style=background-color:lightgrey;width:120px;height:40px onmousedown=getsend('leftdown') onmouseup=getsend('stop') ontouchstart=getsend('leftdown') ontouchend=getsend('stop') ><b>Влево назад</b></button>&nbsp;";
-  page += "<button style=background-color:lightgrey;width:120px;height:40px onmousedown=getsend('back') onmouseup=getsend('stop') ontouchstart=getsend('back') ontouchend=getsend('stop') ><b>Назад</b></button>&nbsp;";
-  page += "<button style=background-color:lightgrey;width:120px;height:40px onmousedown=getsend('rightdown') onmouseup=getsend('stop') ontouchstart=getsend('rightdown') ontouchend=getsend('stop') ><b>Вправо назад</b></button>";
-  page += "</p>";
-
-  page += "<p align=center>";
-  page += "<button style=background-color:lightgrey;width:120px;height:40px; onmousedown=getsend('counterclockwise') onmouseup=getsend('stop') ontouchstart=getsend('counterclockwise') ontouchend=getsend('stop')><b>Разворот влево</b></button>&nbsp;";
-  page += "<button style=background-color:lightgrey;width:120px;height:40px; onmousedown=getsend('clockwise') onmouseup=getsend('stop') ontouchstart=getsend('clockwise') ontouchend=getsend('stop')><b>Разворот вправо</b></button>&nbsp;";
-  page += "</p>";
-
-  page += "<p align=center>";
-  page += "<button style=background-color:lightgrey;width:120px;height:40px onmousedown=getsend('motorleft') onmouseup=getsend('stop') ontouchstart=getsend('motorleft') ontouchend=getsend('stop') ><b>Смотр. налево</b></button>&nbsp;";
-  page += "<button style=background-color:lightgrey;width:120px;height:40px onmousedown=getsend('motorcenter')><b>Смотр. прямо</b></button>&nbsp;";
-  page += "<button style=background-color:lightgrey;width:120px;height:40px onmousedown=getsend('motorright') onmouseup=getsend('stop') ontouchstart=getsend('motorright') ontouchend=getsend('stop') ><b>Смотр. направо</b></button>";
-  page += "</p>";
-
-  page += "<p align=center>";
-  page += "<button style=background-color:yellow;width:120px;height:40px onmousedown=getsend('ledon')><b>Вкл. свет</b></button>&nbsp;";
-  page += "<button style=background-color:yellow;width:120px;height:40px onmousedown=getsend('ledoff')><b>Выкл. свет</b></button>";
-  page += "</p>";
-
-  page += "<p align=center>";
-  page += "<button style=background-color:lightgreen;width:120px;height:40px;onmousedown=getsend('model1') onmouseup=getsend('model1') ontouchstart=getsend('model1') ontouchend=getsend('model1') ><b>Ручное управление</b></button>&nbsp;";
-  page += "<button style=background-color:lightgreen;width:120px;height:40px onmousedown=getsend('model2') onmouseup=getsend('model2') ontouchstart=getsend('model2') ontouchend=getsend('model2') ><b>Без столкновений</b></button>";
-  page += "</p>";
-
-  page += "<p align=center>";
-  page += "<button style=background-color:lightgreen;width:120px;height:40px;onmousedown=getsend('model3') onmouseup=getsend('model3') ontouchstart=getsend('model3') ontouchend=getsend('model3') ><b>Следовать за</b></button>&nbsp;";
-  page += "<button style=background-color:lightgreen;width:120px;height:40px onmousedown=getsend('model4') onmouseup=getsend('model4') ontouchstart=getsend('model4') ontouchend=getsend('model4') ><b>По трэку</b></button>";
-  page += "</p>";
-
-
+  page += "<script>var xhttp = new XMLHttpRequest();</script>\n";
+  page += "<script>function getsend(arg) { xhttp.open('GET', arg +'?' + new Date().getTime(), true); xhttp.send() } </script>\n";
+  page += "<style>\n";
+  page += ".ctrl_btn {\n";
+  page += "    width: 120px;\n";
+  page += "    height: 40px;\n";
+  page += "    background-color: slategray;\n";
+  page += "    border-radius: 8px;\n";
+  page += "    margin: 5px;\n";
+  page += "}\n";
+  page += ".stop { background-color: indianred; }\n";
+  page += ".light { background-color: yellow; }\n";
+  page += "</style>\n";
+  page += "<body>\n";
+  page += "<p align=center><IMG SRC='http://192.168.4.1:81/stream' style='width:320px;transform:rotate(180deg);'></p>\n";
+  page += "<div align=center>\n";
+  page += "<button class=\"ctrl_btn\" onmousedown=getsend('leftup') onmouseup=getsend('stop') ontouchstart=getsend('leftup') ontouchend=getsend('stop')><b>Влево вперёд</b></button>\n";
+  page += "<button class=\"ctrl_btn\" onmousedown=getsend('go') onmouseup=getsend('stop') ontouchstart=getsend('go') ontouchend=getsend('stop') ><b>Вперёд</b></button>\n";
+  page += "<button class=\"ctrl_btn\" onmousedown=getsend('rightup') onmouseup=getsend('stop') ontouchstart=getsend('rightup') ontouchend=getsend('stop') ><b>Вправо вперёд</b></button>\n";
+  page += "</div>\n\n";
+  page += "<div align=center>\n";
+  page += "<button class=\"ctrl_btn\" onmousedown=getsend('left') onmouseup=getsend('stop') ontouchstart=getsend('left') ontouchend=getsend('stop')><b>Влево</b></button>\n";
+  page += "<button class=\"ctrl_btn stop\" onmousedown=getsend('stop') onmouseup=getsend('stop')><b>Стоп</b></button>\n";
+  page += "<button class=\"ctrl_btn\" onmousedown=getsend('right') onmouseup=getsend('stop') ontouchstart=getsend('right') ontouchend=getsend('stop')><b>Вправо</b></button>\n";
+  page += "</div>\n\n";
+  page += "<div align=center>\n";
+  page += "<button class=\"ctrl_btn\" onmousedown=getsend('leftdown') onmouseup=getsend('stop') ontouchstart=getsend('leftdown') ontouchend=getsend('stop') ><b>Влево назад</b></button>\n";
+  page += "<button class=\"ctrl_btn\" onmousedown=getsend('back') onmouseup=getsend('stop') ontouchstart=getsend('back') ontouchend=getsend('stop') ><b>Назад</b></button>\n";
+  page += "<button class=\"ctrl_btn\" onmousedown=getsend('rightdown') onmouseup=getsend('stop') ontouchstart=getsend('rightdown') ontouchend=getsend('stop') ><b>Вправо назад</b></button>\n";
+  page += "</div>\n\n";
+  page += "<div align=center>\n";
+  page += "<button class=\"ctrl_btn\" onmousedown=getsend('counterclockwise') onmouseup=getsend('stop') ontouchstart=getsend('counterclockwise') ontouchend=getsend('stop')><b>Разворот влево</b></button>\n";
+  page += "<button class=\"ctrl_btn\" onmousedown=getsend('clockwise') onmouseup=getsend('stop') ontouchstart=getsend('clockwise') ontouchend=getsend('stop')><b>Разворот вправо</b></button>\n";
+  page += "</div>\n\n\n";
+  page += "<div align=center>\n";
+  page += "<button class=\"ctrl_btn light\" onmousedown=getsend('ledon')><b>Вкл. свет</b></button>\n";
+  page += "<button class=\"ctrl_btn light\" onmousedown=getsend('ledoff')><b>Выкл. свет</b></button>\n";
+  page += "</div>\n";
+  page += "</body>";
   return httpd_resp_send(req, &page[0], strlen(&page[0]));
 }
 
