@@ -264,29 +264,33 @@ static esp_err_t ledoff_handler(httpd_req_t *req) {
   return httpd_resp_send(req, "OK", 2);
 }
 static esp_err_t leftup_handler(httpd_req_t *req) {
-  txdata[1] = Top_Left;
-  Serial.write(txdata, 3);
+  // txdata[1] = Top_Left;
+  // Serial.write(txdata, 3);
+  WheelAct(HIGH, LOW, HIGH, HIGH);
   Serial.println("leftup");
   httpd_resp_set_type(req, "text/html");
   return httpd_resp_send(req, "OK", 2);
 }
 static esp_err_t leftdown_handler(httpd_req_t *req) {
-  txdata[1] = Bottom_Left;
-  Serial.write(txdata, 3);
+  // txdata[1] = Bottom_Left;
+  // Serial.write(txdata, 3);
+  WheelAct(LOW, HIGH, HIGH, HIGH);
   Serial.println("leftdown");
   httpd_resp_set_type(req, "text/html");
   return httpd_resp_send(req, "OK", 2);
 }
 static esp_err_t rightup_handler(httpd_req_t *req) {
-  txdata[1] = Top_Right;
-  Serial.write(txdata, 3);
+  // txdata[1] = Top_Right;
+  // Serial.write(txdata, 3);
+  WheelAct(HIGH, HIGH, HIGH, LOW);
   Serial.println("rightup");
   httpd_resp_set_type(req, "text/html");
   return httpd_resp_send(req, "OK", 2);
 }
 static esp_err_t rightdown_handler(httpd_req_t *req) {
-  txdata[1] = Bottom_Right;
-  Serial.write(txdata, 3);
+  // txdata[1] = Bottom_Right;
+  // Serial.write(txdata, 3);
+   WheelAct(HIGH, HIGH, LOW, HIGH);
   Serial.println("rightdown");
   httpd_resp_set_type(req, "text/html");
   return httpd_resp_send(req, "OK", 2);
