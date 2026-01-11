@@ -3,6 +3,10 @@
 #include "Arduino.h"
 
 extern int gpLed;
+extern int gpRf;
+extern int gpRb;
+extern int gpLf;
+extern int gpLb;
 extern String WiFiAddr;
 byte txdata[3] = { 0xA5, 0, 0x5A };
 const int Forward = 92;
@@ -209,37 +213,50 @@ static esp_err_t index_handler(httpd_req_t *req) {
   return httpd_resp_send(req, &page[0], strlen(&page[0]));
 }
 
+static void WheelAct(int nLf, int nLb, int nRf, int nRb)
+{
+ digitalWrite(gpLf, nLf);
+ digitalWrite(gpLb, nLb);
+ digitalWrite(gpRf, nRf);
+ digitalWrite(gpRb, nRb);
+}
+
 static esp_err_t go_handler(httpd_req_t *req) {
-  txdata[1] = Forward;
-  Serial.write(txdata, 3);
+  // txdata[1] = Forward;
+  // Serial.write(txdata, 3);
+  WheelAct(HIGH, LOW, HIGH, LOW);
   Serial.println("Go");
   httpd_resp_set_type(req, "text/html");
   return httpd_resp_send(req, "OK", 2);
 }
 static esp_err_t back_handler(httpd_req_t *req) {
-  txdata[1] = Backward;
-  Serial.write(txdata, 3);
+  // txdata[1] = Backward;
+  // Serial.write(txdata, 3);
+  WheelAct(LOW, HIGH, LOW, HIGH);
   Serial.println("Back");
   httpd_resp_set_type(req, "text/html");
   return httpd_resp_send(req, "OK", 2);
 }
 static esp_err_t left_handler(httpd_req_t *req) {
-  txdata[1] = Turn_Left;
-  Serial.write(txdata, 3);
+  // txdata[1] = Turn_Left;
+  // Serial.write(txdata, 3);
+  WheelAct(HIGH, LOW, LOW, HIGH);
   Serial.println("Left");
   httpd_resp_set_type(req, "text/html");
   return httpd_resp_send(req, "OK", 2);
 }
 static esp_err_t right_handler(httpd_req_t *req) {
-  txdata[1] = Turn_Right;
-  Serial.write(txdata, 3);
+  // txdata[1] = Turn_Right;
+  // Serial.write(txdata, 3);
+  WheelAct(LOW, HIGH, HIGH, LOW);
   Serial.println("Right");
   httpd_resp_set_type(req, "text/html");
   return httpd_resp_send(req, "OK", 2);
 }
 static esp_err_t stop_handler(httpd_req_t *req) {
-  txdata[1] = Stop;
-  Serial.write(txdata, 3);
+  // txdata[1] = Stop;
+  // Serial.write(txdata, 3);
+  WheelAct(LOW, LOW, LOW, LOW);
   Serial.println("Stop");
   httpd_resp_set_type(req, "text/html");
   return httpd_resp_send(req, "OK", 2);

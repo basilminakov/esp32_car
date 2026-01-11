@@ -13,7 +13,7 @@
 //#define CAMERA_MODEL_M5STACK_ESP32CAM // No PSRAM
 //#define CAMERA_MODEL_M5STACK_UNITCAM // No PSRAM
 //#define CAMERA_MODEL_M5STACK_CAMS3_UNIT  // Has PSRAM
-#define CAMERA_MODEL_AI_THINKER // Has PSRAM
+#define CAMERA_MODEL_AI_THINKER  // Has PSRAM
 //#define CAMERA_MODEL_TTGO_T_JOURNAL // No PSRAM
 //#define CAMERA_MODEL_XIAO_ESP32S3 // Has PSRAM
 // ** Espressif Internal Boards **
@@ -24,23 +24,31 @@
 //#define CAMERA_MODEL_DFRobot_Romeo_ESP32S3 // Has PSRAM
 #include "camera_pins.h"
 
-const char *ssid = "**********";		   // Enter SSID WIFI Name
-const char *password = "**********"; // Enter WIFI Password
+const char *ssid = "";                 // Enter SSID WIFI Name
+const char *password = "";  // Enter WIFI Password
 
 // GPIO Setting
-int gpLed = 4; // Light
+int gpLed = 4;  // Light
+int gpLb =  2; // Left Wheel Back
+int gpLf = 14; // Left Wheel Forward
+int gpRb = 15; // Right Wheel Back
+int gpRf = 13; // Right Wheel Forward
+
 String WiFiAddr = "";
 
 void startCameraServer();
 
-void setup()
-{  
-	Serial.begin(115200);
-	Serial.setDebugOutput(true);
-	Serial.println();
+void setup() {
+  Serial.begin(115200);
+  Serial.setDebugOutput(true);
+  Serial.println();
 
-	pinMode(gpLed, OUTPUT); // Light
-	digitalWrite(gpLed, LOW);
+  pinMode(gpLed, OUTPUT); //Light
+  pinMode(gpLb, OUTPUT); //Left Backward
+  pinMode(gpLf, OUTPUT); //Left Forward
+  pinMode(gpRb, OUTPUT); //Right Forward
+  pinMode(gpRf, OUTPUT); //Right Backward
+  digitalWrite(gpLed, LOW);
 
   camera_config_t config;
   config.ledc_channel = LEDC_CHANNEL_0;
@@ -70,7 +78,7 @@ void setup()
   config.jpeg_quality = 12;
   config.fb_count = 1;
 
- // if PSRAM IC present, init with UXGA resolution and higher JPEG quality
+  // if PSRAM IC present, init with UXGA resolution and higher JPEG quality
   //                      for larger pre-allocated frame buffer.
   if (config.pixel_format == PIXFORMAT_JPEG) {
     if (psramFound()) {
@@ -123,26 +131,25 @@ void setup()
   s->set_vflip(s, 1);
 #endif
 
-	WiFi.begin(ssid, password);
+  WiFi.begin(ssid, password);
   WiFi.setSleep(false);
-	
-	Serial.print("WiFi connecting");
-	while (WiFi.status() != WL_CONNECTED) {
-		delay(500);
-		Serial.print(".");
-	}
-	Serial.println("");
-	Serial.println("WiFi connected");
 
-	startCameraServer();
+  Serial.print("WiFi connecting");
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("");
+  Serial.println("WiFi connected");
 
-	Serial.println("");
-	Serial.print("Camera Ready! Use 'http://");
-	Serial.print(WiFi.localIP());
-	WiFiAddr = WiFi.localIP().toString();
-	Serial.println("' to connect");
+  startCameraServer();
+
+  Serial.println("");
+  Serial.print("Camera Ready! Use 'http://");
+  Serial.print(WiFi.localIP());
+  WiFiAddr = WiFi.localIP().toString();
+  Serial.println("' to connect");
 }
 
 void loop() {
-
 }
